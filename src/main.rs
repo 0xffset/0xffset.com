@@ -1,26 +1,33 @@
 #![feature(duration_constants)]
 use std::{
     collections::HashMap,
-    sync::Mutex,
     time::{Duration, Instant},
 };
 
-use actix_files::NamedFile;
 use actix_web::{
     get, middleware::Logger, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder,
-    Result,
 };
+use parking_lot::RwLock;
 
 const DELAY: Duration = Duration::from_millis(500);
 
+enum UserState {
+    Valid,
+    NotFound,
+}
+
 struct State {
-    pub users: Mutex<HashMap<String, Instant>>,
-    pub count: Mutex<usize>,
+    pub users: RwLock<HashMap<String, Instant>>,
+    pub count: RwLock<usize>,
+}
+
+struct CachedPages {
+    pub index_page: String,
 }
 
 #[get("/")]
-async fn index() -> Result<NamedFile> {
-    Ok(NamedFile::open("public/index.html")?)
+async fn index(cache: web::Data<CachedPages>) -> impl Responder {
+    HttpResponse::Ok().body(cache.index_page.clone())
 }
 
 #[post("/click")]
@@ -31,23 +38,34 @@ async fn click(req: HttpRequest, state: web::Data<State>) -> impl Responder {
         None => return HttpResponse::BadRequest().finish(),
     };
 
-    let mut users = state.users.lock().unwrap();
-    let mut count = state.count.lock().unwrap();
+    let user_state = {
+        let users = state.users.read();
+        if users.contains_key(&ip) {
+            let elapsed = users.get(&ip).unwrap().elapsed();
 
-    if users.contains_key(&ip) {
-        let time = users.get_mut(&ip).unwrap();
-        let elapsed = time.elapsed();
-        if elapsed < DELAY {
-            return HttpResponse::Accepted()
-                .body(format!("[{count},{}]", (DELAY - elapsed).as_millis() + 50));
+            if elapsed < DELAY {
+                let count = state.count.read();
+                return HttpResponse::Accepted()
+                    .body(format!("[{count},{}]", (DELAY - elapsed).as_millis() + 50));
+            } else {
+                UserState::Valid
+            }
         } else {
-            *time = Instant::now();
+            UserState::NotFound
         }
-    } else {
-        users.insert(ip, Instant::now());
-    }
+    };
 
-    *count += 1;
+    match user_state {
+        UserState::Valid => {
+            *state.users.write().get_mut(&ip).unwrap() = Instant::now();
+        }
+        UserState::NotFound => {
+            state.users.write().insert(ip, Instant::now());
+        }
+    };
+
+    *state.count.write() += 1;
+    let count = state.count.read();
 
     HttpResponse::Ok().body(format!("[{count},-1]"))
 }
@@ -64,16 +82,20 @@ async fn main() -> std::io::Result<()> {
         .format_timestamp(None)
         .init();
 
-    log::info!("Starting server on port {port}...");
+    let index_page =
+        std::fs::read_to_string("public/index.html").expect("Error reading index.html");
 
     let state = web::Data::new(State {
-        users: Mutex::new(HashMap::new()),
-        count: Mutex::new(0), // TODO: add count storage on disk and load it
+        users: RwLock::new(HashMap::new()),
+        count: RwLock::new(0), // TODO: add count storage on disk and load it
     });
+
+    let cached_pages = web::Data::new(CachedPages { index_page });
 
     HttpServer::new(move || {
         App::new()
             .app_data(state.clone())
+            .app_data(cached_pages.clone())
             .service(index)
             .service(click)
             .wrap(Logger::new("At `%t` from `%{r}a` to `%r`"))
