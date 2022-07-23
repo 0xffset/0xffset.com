@@ -23,14 +23,10 @@
             method: "POST"
         }).then(res => res.json())
             .then(data => {
-                clicker.disabled = true;
-
                 if (data[1] == -1) {
                     buttonText.innerHTML = "The button has been clicked " + data[0] + " times!";
-                    new Promise(resolve => setTimeout(resolve, 5_000)).then(() => clicker.disabled = false);
                 } else {
-                    buttonText.innerHTML = "Wait for " + data[1] + " seconds to click the button!";
-                    new Promise(resolve => setTimeout(resolve, 1_000 * data[1])).then(() => clicker.disabled = false);
+                    buttonText.innerHTML = "Wait for " + data[1] + "ms to click the button!";
                 }
             })
             .catch(err => { });

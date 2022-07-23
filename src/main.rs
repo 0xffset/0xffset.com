@@ -11,7 +11,7 @@ use actix_web::{
     Result,
 };
 
-const DELAY: Duration = Duration::from_secs(5);
+const DELAY: Duration = Duration::from_millis(1000);
 
 struct State {
     pub users: Mutex<HashMap<String, Instant>>,
@@ -39,7 +39,7 @@ async fn click(req: HttpRequest, state: web::Data<State>) -> impl Responder {
         let elapsed = time.elapsed();
         if elapsed < DELAY {
             return HttpResponse::Accepted()
-                .body(format!("[{count},{}]", (DELAY - elapsed).as_secs() + 1));
+                .body(format!("[{count},{}]", (DELAY - elapsed).as_millis() + 50));
         } else {
             *time = Instant::now();
         }
