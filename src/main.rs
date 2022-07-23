@@ -11,7 +11,7 @@ use actix_web::{
     Result,
 };
 
-const DELAY: Duration = Duration::from_millis(1000);
+const DELAY: Duration = Duration::from_millis(500);
 
 struct State {
     pub users: Mutex<HashMap<String, Instant>>,
