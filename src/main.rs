@@ -1,13 +1,17 @@
 #![feature(duration_constants)]
 use std::{
     collections::HashMap,
+    sync::{
+        atomic::{AtomicUsize, Ordering},
+        Arc,
+    },
     time::{Duration, Instant},
 };
 
 use actix_web::{
     get, middleware::Logger, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder,
 };
-use parking_lot::RwLock;
+use parking_lot::Mutex;
 
 const DELAY: Duration = Duration::from_millis(500);
 
@@ -17,8 +21,8 @@ enum UserState {
 }
 
 struct State {
-    pub users: RwLock<HashMap<String, Instant>>,
-    pub count: RwLock<usize>,
+    pub users: Mutex<HashMap<String, Instant>>,
+    pub count: Arc<AtomicUsize>,
 }
 
 struct CachedPages {
@@ -39,12 +43,12 @@ async fn click(req: HttpRequest, state: web::Data<State>) -> impl Responder {
     };
 
     let user_state = {
-        let users = state.users.read();
+        let users = state.users.lock();
         if users.contains_key(&ip) {
             let elapsed = users.get(&ip).unwrap().elapsed();
 
             if elapsed < DELAY {
-                let count = state.count.read();
+                let count = state.count.load(Ordering::Relaxed);
                 return HttpResponse::Accepted()
                     .body(format!("[{count},{}]", (DELAY - elapsed).as_millis() + 50));
             } else {
@@ -57,16 +61,14 @@ async fn click(req: HttpRequest, state: web::Data<State>) -> impl Responder {
 
     match user_state {
         UserState::Valid => {
-            *state.users.write().get_mut(&ip).unwrap() = Instant::now();
+            *state.users.lock().get_mut(&ip).unwrap() = Instant::now();
         }
         UserState::NotFound => {
-            state.users.write().insert(ip, Instant::now());
+            state.users.lock().insert(ip, Instant::now());
         }
     };
 
-    *state.count.write() += 1;
-    let count = state.count.read();
-
+    let count = state.count.fetch_add(1, Ordering::Relaxed) + 1;
     HttpResponse::Ok().body(format!("[{count},-1]"))
 }
 
@@ -86,8 +88,8 @@ async fn main() -> std::io::Result<()> {
         std::fs::read_to_string("public/index.html").expect("Error reading index.html");
 
     let state = web::Data::new(State {
-        users: RwLock::new(HashMap::new()),
-        count: RwLock::new(0), // TODO: add count storage on disk and load it
+        users: Mutex::new(HashMap::new()),
+        count: Arc::new(AtomicUsize::new(0)), // TODO: add count storage on disk and load it
     });
 
     let cached_pages = web::Data::new(CachedPages { index_page });
