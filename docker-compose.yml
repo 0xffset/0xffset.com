@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+    program:
+        build:
+            context: .
+            args:
+                RUST_APP: ${RUST_APP} # use the vars from the .env file
+        ports:
+            - ${PORT}:${PORT}

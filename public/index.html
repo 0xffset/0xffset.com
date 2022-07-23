@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0xffset.com</title>
+</head>
+
+<body>
+    <b>Hi :)</b><br><br>
+    <button id="clicker">Click me!</button>
+    <b id="buttonText"></b>
+</body>
+
+<script>
+    let clicker = document.getElementById("clicker");
+    let buttonText = document.getElementById("buttonText");
+
+    clicker.onclick = () => {
+        fetch("/click", {
+            method: "POST"
+        }).then(res => res.json())
+            .then(data => {
+                clicker.disabled = true;
+
+                if (data[1] == -1) {
+                    buttonText.innerHTML = "The button has been clicked " + data[0] + " times!";
+                    new Promise(resolve => setTimeout(resolve, 5_000)).then(() => clicker.disabled = false);
+                } else {
+                    buttonText.innerHTML = "Wait for " + data[1] + " seconds to click the button!";
+                    new Promise(resolve => setTimeout(resolve, 1_000 * data[1])).then(() => clicker.disabled = false);
+                }
+            })
+            .catch(err => { });
+    }
+</script>
+
+</html>
