@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>0xffset.com</title>
+</head>
+
+<body>
+    <div class="w-screen h-screen bg-slate-800 flex flex-col">
+        <!-- Start top bar -->
+        <div class="sticky top-0 w-screen h-14 bg-sky-500 rounded-b-xl flex flex-row justify-start drop-shadow-lg z-20">
+            <div id="fbButton"
+                class="rounded-bl-xl px-3 flex items-center justify-center select-none hover:cursor-pointer hover:bg-sky-400">
+                <p class="font-sans text-2xl antialiased font-semibold text-slate-800">Filebrowser</p>
+            </div>
+            <div id="cdnButton"
+                class="px-3 flex items-center justify-center select-none hover:cursor-pointer hover:bg-sky-400">
+                <p class="font-sans text-2xl antialiased font-semibold text-slate-800">CDN</p>
+            </div>
+            <div class="grow"></div>
+            <div id="githubButton"
+                class="rounded-br-xl px-3 flex items-center justify-center select-none hover:cursor-pointer hover:bg-sky-400">
+                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="w-10 h-10 rounded-full">
+            </div>
+        </div>
+        <!-- End top bar -->
+
+        <!-- Start main view -->
+        <div class="w-screen flex flex-col flex-grow">
+            <!-- Start title -->
+            <div class="w-screen h-fit flex justify-center py-8">
+                <div class="w-fit h-fit border-4 border-solid border-sky-500 rounded-2xl p-3 drop-shadow-lg z-10">
+                    <p class="font-sans text-6xl antialiased font-bold text-sky-500 select-none hover:cursor-default">
+                        It's a website!
+                    </p>
+                </div>
+
+                <!-- Start shadow -->
+                <div class="absolute w-fit h-fit border-4 border-solid rounded-2xl p-3 drop-shadow-lg z-0"
+                    style="transform: skewX(-30deg) scaleY(.5) translateY(2.5rem) translateX(1.5rem); border-color: rgb(14, 18, 28);">
+                    <p class="font-sans text-6xl antialiased font-bold select-none hover:cursor-default"
+                        style="color: rgb(14, 18, 28);">
+                        It's a website!
+                    </p>
+                </div>
+                <!-- End shadow -->
+            </div>
+            <!-- End title -->
+        </div>
+        <!-- End main view -->
+
+        <!-- Start footer -->
+        <div class="w-screen h-8 bg-sky-500 rounded-t-xl flex flex-row justify-start drop-shadow-lg">
+            <div class="grow"></div>
+            <div class="rounded-br-xl px-3 flex items-center justify-center select-none hover:cursor-default">
+                <p class="font-sans text-md antialiased text-slate-700">@0xffset, Rights reserved?</p>
+            </div>
+        </div>
+        <!-- End footer -->
+    </div>
+</body>
+
+<script>
+    let fbButton = document.getElementById('fbButton');
+    let cdnButton = document.getElementById('cdnButton');
+    let githubButton = document.getElementById('githubButton');
+
+    fbButton.addEventListener('click', function () {
+        window.location.href = "https://fb.0xffset.com";
+    });
+
+    cdnButton.addEventListener('click', function () {
+        window.location.href = "https://cdn.0xffset.com";
+    });
+
+    githubButton.addEventListener('click', function () {
+        window.location.href = "https://github.com/0xffset";
+    });
+</script>
+
+</html>

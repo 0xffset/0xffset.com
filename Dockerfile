@@ -44,6 +44,7 @@ RUN groupadd $APP_USER \
     && useradd -g $APP_USER $APP_USER \
     && mkdir -p ${APP}
 
+# copy built program binary, .env file and the folder containing the webfiles
 COPY --from=builder /${RUST_APP}/target/release/${RUST_APP} ${APP}/program
 COPY .env ${APP}/.env
 COPY public ${APP}/public
