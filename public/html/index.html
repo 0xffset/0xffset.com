@@ -16,27 +16,38 @@
     <div class="main-container">
         <!-- Start nav bar -->
         <div class="nav-bar">
-            <div class="nav-bar-item-first">
-                <p class="nav-bar-text nav-bar-title">0xffset.com</p>
-            </div>
-            <div id="fbButton" class="nav-bar-item">
-                <p class="nav-bar-text">Filebrowser</p>
-            </div>
-            <div id="cdnButton" class="nav-bar-item">
-                <p class="nav-bar-text">CDN</p>
-            </div>
+            <a href="https://0xffset.com" class="nav-bar-site-name">
+                <div class="nav-bar-item-first">
+                    <p class="nav-bar-text nav-bar-title">0xffset.com</p>
+                </div>
+            </a>
+            <a href="https://fb.0xffset.com" class="nav-bar-link">
+                <div class="nav-bar-item">
+                    <p class="nav-bar-text">Filebrowser</p>
+                </div>
+            </a>
+            <a href="https://cdn.0xffset.com" class="nav-bar-link">
+                <div class="nav-bar-item">
+                    <p class="nav-bar-text">CDN</p>
+                </div>
+            </a>
+
             <div class="grow"></div>
             <div id="mobileNavBarMenu" class="mobile-nav-bar-item">
                 <p class="nav-bar-text">Other stuff</p>
             </div>
         </div>
         <div id="mobileMenuDropdown" class="mobile-nav-bar-dropdown">
-            <div id="fbButtonMobile" class="mobile-nav-bar-dropdown-item">
-                <p class="nav-bar-text">Filebrowser</p>
-            </div>
-            <div id="cdnButtonMobile" class="mobile-nav-bar-dropdown-item-last">
-                <p class="nav-bar-text">CDN</p>
-            </div>
+            <a href="https://fb.0xffset.com" class="mobile-nav-bar-dropdown-link">
+                <div class="mobile-nav-bar-dropdown-item">
+                    <p class="nav-bar-text">Filebrowser</p>
+                </div>
+            </a>
+            <a href="https://cdn.0xffset.com" class="mobile-nav-bar-dropdown-link">
+                <div class="mobile-nav-bar-dropdown-item-last">
+                    <p class="nav-bar-text">CDN</p>
+                </div>
+            </a>
         </div>
         <!-- End nav bar -->
 
@@ -64,9 +75,11 @@
 
         <!-- Start footer -->
         <div class="footer">
-            <div id="githubButton" class="github-footer-item">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="github-logo">
-            </div>
+            <a href="https://github.com/0xffset" class="footer-link">
+                <div class="github-footer-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="github-logo">
+                </div>
+            </a>
             <div class="grow"></div>
             <div class="footer-item-right">
                 <p class="footer-text">@0xffset, Rights reserved?</p>
@@ -78,37 +91,20 @@
 
 <script>
     let navbar = document.getElementsByClassName("nav-bar")[0];
-    let fbButton = document.getElementById('fbButton');
-    let cdnButton = document.getElementById('cdnButton');
-    let fbButtonMobile = document.getElementById('fbButtonMobile');
-    let cdnButtonMobile = document.getElementById('cdnButtonMobile');
-    let githubButton = document.getElementById('githubButton');
     let mobileNavBarMenu = document.getElementById('mobileNavBarMenu');
     let mobileMenuDropdown = document.getElementById('mobileMenuDropdown');
-
-    fbButton.addEventListener('click', function () {
-        window.location.href = "https://fb.0xffset.com";
-    });
-
-    cdnButton.addEventListener('click', function () {
-        window.location.href = "https://cdn.0xffset.com";
-    });
-
-    fbButtonMobile.addEventListener('click', function () {
-        window.location.href = "https://fb.0xffset.com";
-    });
-
-    cdnButtonMobile.addEventListener('click', function () {
-        window.location.href = "https://cdn.0xffset.com";
-    });
-
-    githubButton.addEventListener('click', function () {
-        window.location.href = "https://github.com/0xffset";
-    });
+    let mobileDropdownToggle = false;
 
     mobileNavBarMenu.addEventListener('click', function () {
-        mobileMenuDropdown.style.display = 'flex';
-        navbar.style.borderBottomRightRadius = 0;
+        if (mobileDropdownToggle) {
+            mobileMenuDropdown.style.display = 'none';
+            navbar.style.borderBottomRightRadius = '0.75rem'; // according to tailwindcss
+            mobileDropdownToggle = false;
+        } else {
+            mobileMenuDropdown.style.display = 'flex';
+            navbar.style.borderBottomRightRadius = '0';
+            mobileDropdownToggle = true;
+        }
     });
 
     document.addEventListener('click', function (event) {

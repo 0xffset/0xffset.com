@@ -22,12 +22,31 @@
     @apply z-50;
 }
 
+%nav-bar-link-template {
+    @apply hidden;
+    @apply sm:flex;
+    @apply items-center;
+    @apply w-fit;
+    @apply h-fit;
+}
+
+.nav-bar-link {
+    @extend %nav-bar-link-template;
+}
+
+.nav-bar-site-name {
+    @extend %nav-bar-link-template;
+    @apply flex;
+}
+
 %nav-bar-item-template {
     @apply px-3;
     @apply hidden;
     @apply sm:flex;
     @apply items-center;
     @apply justify-center;
+    @apply h-14;
+    @apply w-fit;
     @apply select-none;
     @apply hover:cursor-pointer;
     @apply hover:bg-sky-400;
@@ -35,12 +54,12 @@
 
 .nav-bar-item {
     @extend %nav-bar-item-template;
+    @apply flex;
 }
 
 .nav-bar-item-first {
     @extend %nav-bar-item-template;
     @apply flex;
-    @apply hover:cursor-default;
     @apply hover:bg-sky-500;
     @apply pl-3;
     @apply sm:pl-5;
@@ -75,6 +94,13 @@
     @apply z-50;
 }
 
+.mobile-nav-bar-dropdown-link {
+    @apply flex;
+    @apply items-center;
+    @apply w-full;
+    @apply h-full;
+}
+
 %mobile-nav-bar-dropdown-item-template {
     @apply px-3;
     @apply py-1;
@@ -82,11 +108,6 @@
     @apply items-center;
     @apply justify-center;
     @apply select-none;
-    @apply hover:bg-sky-400;
-}
-
-.mobile-nav-bar-dropdown-item {
-    @extend %mobile-nav-bar-dropdown-item-template;
 }
 
 .mobile-nav-bar-dropdown-item {
@@ -187,12 +208,21 @@
     @apply justify-start;
 }
 
+.footer-link {
+    @apply flex;
+    @apply items-center;
+    @apply justify-center;
+    @apply w-fit;
+    @apply h-fit;
+}
+
 %footer-item-template {
     @apply flex;
     @apply items-center;
     @apply justify-center;
     @apply select-none;
     @apply px-3;
+    @apply h-10;
 }
 
 .github-footer-item {
