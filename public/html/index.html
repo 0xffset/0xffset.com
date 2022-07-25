@@ -14,31 +14,45 @@
 
 <body>
     <div class="main-container">
-        <!-- Start top bar -->
-        <div class="desktop-nav-bar">
-            <div id="fbButton" class="desktop-nav-bar-item-first">
-                <p class="desktop-nav-bar-text">Filebrowser</p>
+        <!-- Start nav bar -->
+        <div class="nav-bar">
+            <div class="nav-bar-item-first">
+                <p class="nav-bar-text nav-bar-title">0xffset.com</p>
             </div>
-            <div id="cdnButton" class="desktop-nav-bar-item">
-                <p class="desktop-nav-bar-text">CDN</p>
+            <div id="fbButton" class="nav-bar-item">
+                <p class="nav-bar-text">Filebrowser</p>
+            </div>
+            <div id="cdnButton" class="nav-bar-item">
+                <p class="nav-bar-text">CDN</p>
             </div>
             <div class="grow"></div>
+            <div id="mobileNavBarMenu" class="mobile-nav-bar-item">
+                <p class="nav-bar-text">Other stuff</p>
+            </div>
         </div>
-        <!-- End top bar -->
+        <div id="mobileMenuDropdown" class="mobile-nav-bar-dropdown">
+            <div id="fbButtonMobile" class="mobile-nav-bar-dropdown-item">
+                <p class="nav-bar-text">Filebrowser</p>
+            </div>
+            <div id="cdnButtonMobile" class="mobile-nav-bar-dropdown-item-last">
+                <p class="nav-bar-text">CDN</p>
+            </div>
+        </div>
+        <!-- End nav bar -->
 
         <!-- Start main view -->
         <div class="main-view">
             <!-- Start title -->
-            <div class="desktop-title">
-                <div class="desktop-title-container">
-                    <p class="desktop-title-text">
+            <div class="title">
+                <div class="title-container">
+                    <p class="title-text">
                         It's a website!
                     </p>
                 </div>
 
                 <!-- Start shadow -->
-                <div class="desktop-shadow">
-                    <p class="desktop-shadow-text">
+                <div class="shadow">
+                    <p class="shadow-text">
                         It's a website!
                     </p>
                 </div>
@@ -63,9 +77,14 @@
 </body>
 
 <script>
+    let navbar = document.getElementsByClassName("nav-bar")[0];
     let fbButton = document.getElementById('fbButton');
     let cdnButton = document.getElementById('cdnButton');
+    let fbButtonMobile = document.getElementById('fbButtonMobile');
+    let cdnButtonMobile = document.getElementById('cdnButtonMobile');
     let githubButton = document.getElementById('githubButton');
+    let mobileNavBarMenu = document.getElementById('mobileNavBarMenu');
+    let mobileMenuDropdown = document.getElementById('mobileMenuDropdown');
 
     fbButton.addEventListener('click', function () {
         window.location.href = "https://fb.0xffset.com";
@@ -75,8 +94,28 @@
         window.location.href = "https://cdn.0xffset.com";
     });
 
+    fbButtonMobile.addEventListener('click', function () {
+        window.location.href = "https://fb.0xffset.com";
+    });
+
+    cdnButtonMobile.addEventListener('click', function () {
+        window.location.href = "https://cdn.0xffset.com";
+    });
+
     githubButton.addEventListener('click', function () {
         window.location.href = "https://github.com/0xffset";
+    });
+
+    mobileNavBarMenu.addEventListener('click', function () {
+        mobileMenuDropdown.style.display = 'flex';
+        navbar.style.borderBottomRightRadius = 0;
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!mobileNavBarMenu.contains(event.target) && !mobileMenuDropdown.contains(event.target)) {
+            mobileMenuDropdown.style.display = 'none';
+            navbar.style.borderBottomRightRadius = '0.75rem'; // according to tailwindcss
+        }
     });
 </script>
 
