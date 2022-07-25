@@ -5,66 +5,57 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/index_prod.css">
+    <style lang="sass">
+        @import url("sass/index.scss");
+    </style>
     <title>0xffset.com</title>
 </head>
 
 <body>
-    <div class="w-screen h-screen bg-slate-800 flex flex-col">
+    <div class="main-container">
         <!-- Start top bar -->
-        <div class="sticky top-0 w-screen h-14 bg-sky-500 rounded-b-xl flex flex-row justify-start drop-shadow-lg z-20">
-            <div id="fbButton"
-                class="rounded-bl-xl px-3 flex items-center justify-center select-none hover:cursor-pointer hover:bg-sky-400">
-                <p class="font-sans text-2xl antialiased font-semibold text-slate-800">Filebrowser</p>
+        <div class="desktop-nav-bar">
+            <div id="fbButton" class="desktop-nav-bar-item-first">
+                <p class="desktop-nav-bar-text">Filebrowser</p>
             </div>
-            <div id="cdnButton"
-                class="px-3 flex items-center justify-center select-none hover:cursor-pointer hover:bg-sky-400">
-                <p class="font-sans text-2xl antialiased font-semibold text-slate-800">CDN</p>
+            <div id="cdnButton" class="desktop-nav-bar-item">
+                <p class="desktop-nav-bar-text">CDN</p>
             </div>
             <div class="grow"></div>
-            <div id="githubButton"
-                class="rounded-br-xl px-3 flex items-center justify-center select-none hover:cursor-pointer hover:bg-sky-400">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="w-10 h-10 rounded-full">
-            </div>
         </div>
         <!-- End top bar -->
 
         <!-- Start main view -->
-        <div class="w-screen flex flex-col flex-grow">
+        <div class="main-view">
             <!-- Start title -->
-            <div class="w-screen h-fit flex justify-center py-10">
-                <div class="w-fit h-fit border-4 border-solid border-sky-500 rounded-2xl p-3 drop-shadow-lg z-10">
-                    <p class="font-sans text-6xl antialiased font-bold text-sky-500 select-none hover:cursor-default">
+            <div class="desktop-title">
+                <div class="desktop-title-container">
+                    <p class="desktop-title-text">
                         It's a website!
                     </p>
                 </div>
 
                 <!-- Start shadow -->
-                <div class="absolute w-fit h-fit border-4 border-solid rounded-2xl p-3 blur-sm drop-shadow-lg z-0"
-                    style="transform: skewX(-30deg) scaleY(.5) scaleX(.97) translateY(3.5rem) translateX(1.75rem); border-color: rgb(14, 18, 28);">
-                    <p class="font-sans text-6xl antialiased font-bold select-none hover:cursor-default"
-                        style="color: rgb(14, 18, 28);">
+                <div class="desktop-shadow">
+                    <p class="desktop-shadow-text">
                         It's a website!
                     </p>
                 </div>
                 <!-- End shadow -->
             </div>
             <!-- End title -->
-
-            <div class="w-screen flex flex-col flex-grow items-center">
-                <span class="font-sans text-lg antialiased font-bold text-sky-500 select-none hover:cursor-default">
-                    Desktop only as of now (I'm lazy and not a front end guy)</span>
-                <span class="font-sans text-lg antialiased font-bold text-sky-500 select-none hover:cursor-default">
-                    Sorry :(</span>
-            </div>
         </div>
         <!-- End main view -->
 
         <!-- Start footer -->
-        <div class="w-screen h-8 bg-sky-500 rounded-t-xl flex flex-row justify-start drop-shadow-lg">
+        <div class="footer">
+            <div id="githubButton" class="github-footer-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="github-logo">
+            </div>
             <div class="grow"></div>
-            <div class="rounded-br-xl px-3 flex items-center justify-center select-none hover:cursor-default">
-                <p class="font-sans text-md antialiased text-slate-700">@0xffset, Rights reserved?</p>
+            <div class="footer-item-right">
+                <p class="footer-text">@0xffset, Rights reserved?</p>
             </div>
         </div>
         <!-- End footer -->

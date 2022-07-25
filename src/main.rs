@@ -25,6 +25,7 @@ async fn main() -> std::io::Result<()> {
             .service(index)
             .service(actix_files::Files::new("css/", "public/css"))
             .service(actix_files::Files::new("js/", "public/js"))
+            .service(actix_files::Files::new("sass/", "public/sass"))
             .wrap(Logger::new("At `%t` from `%{r}a` to `%r`"))
     })
     .bind(("0.0.0.0", port))?

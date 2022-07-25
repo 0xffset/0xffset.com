@@ -1,7 +1,7 @@
-################
-# Build system #
-################
-FROM rust:slim as builder
+#####################
+# Rust Build system #
+#####################
+FROM rust:slim as rust-builder
 # set nightly
 RUN rustup default nightly
 
@@ -24,6 +24,21 @@ RUN rm target/release/deps/${RUST_APP}*
 COPY src src
 RUN cargo build --release
 
+#####################################
+# SASS and TailwindCSS Build System #
+#####################################
+FROM node:current-slim as style-builder
+RUN npm i -g tailwindcss sass
+
+# copy style files and config
+COPY public public
+COPY tailwind.config.js tailwind.config.js
+
+# build sass first
+RUN npx sass public/sass:public/css
+
+#build tailwindcss files
+RUN npx tailwindcss -i ./public/css/index.css -o ./public/css/index_prod.css
 
 ###########
 # Runtime #
@@ -45,9 +60,9 @@ RUN groupadd $APP_USER \
     && mkdir -p ${APP}
 
 # copy built program binary, .env file and the folder containing the webfiles
-COPY --from=builder /${RUST_APP}/target/release/${RUST_APP} ${APP}/program
+COPY --from=rust-builder /${RUST_APP}/target/release/${RUST_APP} ${APP}/program
 COPY .env ${APP}/.env
-COPY public ${APP}/public
+COPY --from=style-builder public ${APP}/public
 
 RUN chown -R $APP_USER:$APP_USER ${APP}
 USER $APP_USER
