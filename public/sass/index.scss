@@ -54,7 +54,6 @@
 
 .nav-bar-item {
     @extend %nav-bar-item-template;
-    @apply flex;
 }
 
 .nav-bar-item-first {
@@ -97,8 +96,8 @@
 .mobile-nav-bar-dropdown-link {
     @apply flex;
     @apply items-center;
-    @apply w-full;
-    @apply h-full;
+    @apply w-fit;
+    @apply h-fit;
 }
 
 %mobile-nav-bar-dropdown-item-template {
