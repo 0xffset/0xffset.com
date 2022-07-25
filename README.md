@@ -2,6 +2,8 @@
 
 Repo containing the source code of my website [0xffset.com](https://0xffset.com).
 
+The website runs on an [actix-web server](https://actix.rs/) with frontend powered by [SASS](https://sass-lang.com/) and [TailwindCSS](https://tailwindcss.com/)
+
 ### Build
 To build just run `docker compose build && docker compose up`
 
